@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DATA PELANGGAN - UNIT KONSULTASI DAN KIOSK CDN IPOH</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .header-bg {
+      background-color: #1e40af;
+    }
+    .loading-spinner {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .data-entry {
+      transition: all 0.3s ease;
+    }
+    .data-entry:hover {
+      background-color: #f3f4f6;
+    }
+    .nav-tab {
+      transition: all 0.2s ease;
+    }
+    .nav-tab.active {
+      border-bottom: 3px solid #1e40af;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="min-h-screen">
+    <!-- Header Section -->
+    <div class="header-bg text-white p-4 shadow-md">
+      <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl font-bold">DATA PELANGGAN</h1>
+        <p class="text-sm">UNIT KONSULTASI DAN KIOSK CDN IPOH</p>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto">
+        <nav class="flex space-x-8">
+          <button id="tabDataEntry" class="nav-tab active py-4 px-1">Entri Data</button>
+          <button id="tabRecords" class="nav-tab py-4 px-1">Rekod Pelanggan</button>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <!-- Data Entry Tab Content -->
+      <div id="dataEntryContent">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+          <div class="p-6">
+            <form id="dataForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Tarikh</label>
+                <input type="date" name="tarikh" id="currentDate" class="p-2 border rounded w-full" required>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Masa</label>
+                <input type="time" name="masa" id="currentTime" class="p-2 border rounded w-full" required>
+              </div>
+
+              <input type="text" name="namaPelanggan" placeholder="Nama Pelanggan" class="p-2 border rounded" required>
+              <input type="text" name="namaSyarikat" placeholder="Nama Syarikat" class="p-2 border rounded">
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Kaedah</label>
+                <select name="kaedah" class="p-2 border rounded w-full">
+                  <option value="">Pilih Kaedah</option>
+                  <option value="Bersemuka">Bersemuka</option>
+                  <option value="Telefon">Telefon</option>
+                  <option value="Emel">Emel</option>
+                  <option value="Surat">Surat</option>
+                </select>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">No. Telefon</label>
+                  <input type="tel" name="telefon" placeholder="No. Telefon" class="p-2 border rounded w-full">
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Emel</label>
+                  <input type="email" name="emel" placeholder="Emel" class="p-2 border rounded w-full">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Pegawai</label>
+                <select name="pegawai" class="p-2 border rounded w-full">
+                  <option value="">Pilih Pegawai</option>
+                  <option value="Santhanavel Ramesh A/L Subramaniam">Santhanavel Ramesh A/L Subramaniam</option>
+                  <option value="Mohamed Inmran bin Sahul Hamid">Mohamed Inmran bin Sahul Hamid</option>
+                  <option value="Haziq bin Zakaria">Haziq bin Zakaria</option>
+                  <option value="Mohd Nazri bin Mohd Noh">Mohd Nazri bin Mohd Noh</option>
+                  <option value="Siti Bahayah binti Baharom">Siti Bahayah binti Baharom</option>
+                  <option value="Nur Hawari binti Mohd Johar @ Mohd Johan">Nur Hawari binti Mohd Johar @ Mohd Johan</option>
+                  <option value="Noor Umaira binti Md Yusop">Noor Umaira binti Md Yusop</option>
+                  <option value="Siti Zulaikha bint Eroi">Siti Zulaikha bint Eroi</option>
+                  <option value="Umum">Umum</option>
+                </select>
+              </div>
+
+              <div class="col-span-1 md:col-span-2 space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Perkara</label>
+                  <select name="perkara" class="p-2 border rounded w-full">
+                    <option value="">Pilih Perkara</option>
+                    <option value="Cukai Jualan">Cukai Jualan</option>
+                    <option value="Cukai Perkhidmatan">Cukai Perkhidmatan</option>
+                    <option value="GST">GST</option>
+                    <option value="Cukai Pelancongan">Cukai Pelancongan</option>
+                    <option value="Duti Import">Duti Import</option>
+                    <option value="LMW">LMW</option>
+                    <option value="FIZ">FIZ</option>
+                    <option value="ABT">ABT</option>
+                    <option value="Lain-Lain">Lain-Lain</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Isu</label>
+                  <select name="isu" class="p-2 border rounded w-full">
+                    <option value="">Pilih Isu</option>
+                    <option value="Aduan/Lain-Lain">Aduan/Lain-Lain</option>
+                    <option value="Audit">Audit</option>
+                    <option value="B2B Exemption">B2B Exemption</option>
+                    <option value="BOD">BOD</option>
+                    <option value="Pembatalan">Pembatalan</option>
+                    <option value="Pembatalan Pengecualian">Pembatalan Pengecualian</option>
+                    <option value="Penalti">Penalti</option>
+                    <option value="Pendaftaran">Pendaftaran</option>
+                    <option value="Pengecualian Cukai">Pengecualian Cukai</option>
+                    <option value="Penukaran Alamat">Penukaran Alamat</option>
+                    <option value="Penukaran Emel">Penukaran Emel</option>
+                    <option value="Penyata">Penyata</option>
+                    <option value="Penyata SST-02 Pembayaran">Penyata SST-02 Pembayaran</option>
+                    <option value="Penyata SST-02 Penghantaran">Penyata SST-02 Penghantaran</option>
+                    <option value="Pertanyaan Nilai Cukai">Pertanyaan Nilai Cukai</option>
+                    <option value="Refund / Drawback">Refund / Drawback</option>
+                    <option value="Remisi">Remisi</option>
+                    <option value="Reset Password">Reset Password</option>
+                    <option value="Senarai hitam Imigresen">Senarai hitam Imigresen</option>
+                    <option value="Invoice">Invoice</option>
+                  </select>
+                </div>
+
+                <textarea name="pertanyaan" placeholder="Pertanyaan" class="p-2 border rounded w-full h-32"></textarea>
+                <textarea name="jawapan" placeholder="Jawapan" class="p-2 border rounded w-full h-32"></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit bg-blue-600 text-white p-2 rounded col-span-1 md:col-span-2 hover:bg-blue-700 transition flex items-center justify-center">
+                <span id="submit-text">Hantar</span>
+                <span id="spinner" class="loading-spinner" style="display:none;"></span>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Records Tab Content -->
+      <div id="recordsContent" class="hidden">
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+          <div class="p-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+              <h2 class="text-xl font-semibold">Rekod Pelanggan</h2>
+              <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <input type="text" id="searchInput" placeholder="Cari..." class="p-2 border rounded w-full sm:w-64">
+                <div class="flex gap-2">
+                  <button onclick="downloadExcel()" class="bg-green-600 text-white p-2 rounded hover:bg-green-700 whitespace-nowrap">
+                    Muat Turun Excel
+                  </button>
+                  <button onclick="clearAllData()" class="bg-red-500 text-white p-2 rounded hover:bg-red-600 whitespace-nowrap">
+                    Kosongkan Semua
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bil</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Pelanggan</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Syarikat</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kaedah</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Isu</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarikh</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tindakan</th>
+                  </tr>
+                </thead>
+                <tbody id="recordsTableBody" class="bg-white divide-y divide-gray-200">
+                  <tr>
+                    <td colspan="7" class="px-6 py-4 text-center text-gray-500">Memuatkan data...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="mt-4 flex justify-between items-center">
+              <div class="text-sm text-gray-500">
+                Menunjukkan <span id="showingFrom">0</span> hingga <span id="showingTo">0</span> daripada <span id="totalRecords">0</span> rekod
+              </div>
+              <div class="flex space-x-2">
+                <button id="prevPage" class="px-3 py-1 border rounded disabled:opacity-50" disabled>Sebelum</button>
+                <button id="nextPage" class="px-3 py-1 border rounded disabled:opacity-50" disabled>Seterusnya</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SheetJS CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <script>
+    // Initialize variables
+    let currentPage = 1;
+    const recordsPerPage = 10;
+    let allRecords = [];
+    let filteredRecords = [];
+
+    // Initialize the application
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set current date and time
+      const now = new Date();
+      document.getElementById('currentDate').value = now.toISOString().split('T')[0];
+      document.getElementById('currentTime').value = now.toTimeString().substring(0, 5);
+      
+      // Load data
+      loadData();
+      
+      // Setup tab switching
+      setupTabs();
+      
+      // Setup form submission
+      setupForm();
+      
+      // Setup search functionality
+      setupSearch();
+      
+      // Setup pagination
+      setupPagination();
+    });
+
+    // Setup tab switching
+    function setupTabs() {
+      const tabs = {
+        tabDataEntry: 'dataEntryContent',
+        tabRecords: 'recordsContent'
+      };
+      
+      for (const [tabId, contentId] of Object.entries(tabs)) {
+        document.getElementById(tabId).addEventListener('click', function() {
+          // Update active tab
+          document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Hide all content
+          document.querySelectorAll('[id$="Content"]').forEach(content => {
+            content.classList.add('hidden');
+          });
+          
+          // Show selected content
+          document.getElementById(contentId).classList.remove('hidden');
+          
+          // Refresh data if needed
+          if (contentId === 'recordsContent') {
+            renderRecordsTable();
+          }
+        });
+      }
+    }
+
+    // Load data from localStorage
+    function loadData() {
+      const savedData = localStorage.getItem('customerData');
+      if (savedData) {
+        allRecords = JSON.parse(savedData);
+        filteredRecords = [...allRecords];
+        renderRecordsTable();
+      }
+    }
+
+    // Save data to localStorage
+    function saveData(data) {
+      localStorage.setItem('customerData', JSON.stringify(data));
+      allRecords = data;
+      filteredRecords = [...data];
+    }
+
+    // Setup form submission
+    function setupForm() {
+      const form = document.getElementById('dataForm');
+      const submitText = document.getElementById('submit-text');
+      const spinner = document.getElementById('spinner');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        submitText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+
+        setTimeout(() => {
+          const formData = new FormData(form);
+          const entry = {};
+          
+          formData.forEach((value, key) => {
+            if (value) entry[key] = value;
+          });
+
+          // Get existing data or initialize empty array
+          const savedData = localStorage.getItem('customerData') 
+            ? JSON.parse(localStorage.getItem('customerData')) 
+            : [];
+          
+          // Add new entry at the beginning
+          savedData.unshift(entry);
+          saveData(savedData);
+          
+          // Reset form but keep date/time current
+          form.reset();
+          const now = new Date();
+          document.getElementById('currentDate').value = now.toISOString().split('T')[0];
+          document.getElementById('currentTime').value = now.toTimeString().substring(0, 5);
+          
+          submitText.style.display = 'inline';
+          spinner.style.display = 'none';
+          
+          // Show success message
+          alert('Data berjaya disimpan!');
+          
+          // Switch to records tab
+          document.getElementById('tabRecords').click();
+        }, 500);
+      });
+    }
+
+    // Setup search functionality
+    function setupSearch() {
+      const searchInput = document.getElementById('searchInput');
+      
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        
+        if (searchTerm === '') {
+          filteredRecords = [...allRecords];
+        } else {
+          filteredRecords = allRecords.filter(record => {
+            return (
+              (record.namaPelanggan && record.namaPelanggan.toLowerCase().includes(searchTerm)) ||
+              (record.namaSyarikat && record.namaSyarikat.toLowerCase().includes(searchTerm)) ||
+              (record.telefon && record.telefon.includes(searchTerm)) ||
+              (record.emel && record.emel.toLowerCase().includes(searchTerm)) ||
+              (record.isu && record.isu.toLowerCase().includes(searchTerm)) ||
+              (record.pertanyaan && record.pertanyaan.toLowerCase().includes(searchTerm))
+            );
+          });
+        }
+        
+        currentPage = 1;
+        renderRecordsTable();
+      });
+    }
+
+    // Setup pagination
+    function setupPagination() {
+      document.getElementById('prevPage').addEventListener('click', function() {
+        if (currentPage > 1) {
+          currentPage--;
+          renderRecordsTable();
+        }
+      });
+      
+      document.getElementById('nextPage').addEventListener('click', function() {
+        const totalPages = Math.ceil(filteredRecords.length / recordsPerPage);
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderRecordsTable();
+        }
+      });
+    }
+
+    // Render records table with pagination
+    function renderRecordsTable() {
+      const tableBody = document.getElementById('recordsTableBody');
+      tableBody.innerHTML = '';
+      
+      if (filteredRecords.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="7" class="px-6 py-4 text-center text-gray-500">Tiada rekod ditemui</td>
+          </tr>
+        `;
+        updatePaginationInfo();
+        return;
+      }
+      
+      const startIndex = (currentPage - 1) * recordsPerPage;
+      const endIndex = Math.min(startIndex + recordsPerPage, filteredRecords.length);
+      const paginatedRecords = filteredRecords.slice(startIndex, endIndex);
+      
+      paginatedRecords.forEach((record, index) => {
+        const absoluteIndex = startIndex + index + 1;
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-gray-50';
+        row.innerHTML = `
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${absoluteIndex}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm font-medium text-gray-900">${record.namaPelanggan || '-'}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-500">${record.namaSyarikat || '-'}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-500">${record.kaedah || '-'}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-500">${record.isu || '-'}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="text-sm text-gray-500">${record.tarikh || ''} ${record.masa || ''}</div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+            <button onclick="viewRecordDetail(${startIndex + index})" class="text-blue-600 hover:text-blue-900 mr-3">Lihat</button>
+            <button onclick="deleteRecord(${startIndex + index})" class="text-red-600 hover:text-red-900">Padam</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+      
+      updatePaginationInfo();
+    }
+
+    // Update pagination information
+    function updatePaginationInfo() {
+      const totalRecords = filteredRecords.length;
+      const totalPages = Math.ceil(totalRecords / recordsPerPage);
+      const startRecord = (currentPage - 1) * recordsPerPage + 1;
+      const endRecord = Math.min(currentPage * recordsPerPage, totalRecords);
+      
+      document.getElementById('showingFrom').textContent = startRecord;
+      document.getElementById('showingTo').textContent = endRecord;
+      document.getElementById('totalRecords').textContent = totalRecords;
+      
+      const prevButton = document.getElementById('prevPage');
+      const nextButton = document.getElementById('nextPage');
+      
+      prevButton.disabled = currentPage <= 1;
+      nextButton.disabled = currentPage >= totalPages;
+    }
+
+    // View record details
+    function viewRecordDetail(index) {
+      const record = allRecords[index];
+      let detailHTML = `
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl mx-auto">
+          <h3 class="text-lg font-medium text-gray-900 mb-4">Butiran Rekod</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      `;
+      
+      for (const key in record) {
+        if (record[key]) {
+          const displayKey = key.replace(/([A-Z])/g, ' $1').toUpperCase();
+          detailHTML += `
+            <div>
+              <p class="text-sm font-medium text-gray-500">${displayKey}</p>
+              <p class="mt-1 text-sm text-gray-900">${record[key]}</p>
+            </div>
+          `;
+        }
+      }
+      
+      detailHTML += `
+          </div>
+          <div class="mt-6 flex justify-end">
+            <button onclick="closeModal()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
+              Tutup
+            </button>
+          </div>
+        </div>
+      `;
+      
+      const modal = document.createElement('div');
+      modal.id = 'recordModal';
+      modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50';
+      modal.innerHTML = detailHTML;
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+      });
+      
+      document.body.appendChild(modal);
+    }
+
+    // Close modal
+    function closeModal() {
+      const modal = document.getElementById('recordModal');
+      if (modal) modal.remove();
+    }
+
+    // Delete a record
+    function deleteRecord(index) {
+      if (confirm('Adakah anda pasti ingin memadam rekod ini?')) {
+        const newData = [...allRecords];
+        newData.splice(index, 1);
+        saveData(newData);
+        
+        if (filteredRecords.length <= ((currentPage - 1) * recordsPerPage)) {
+          currentPage = Math.max(1, currentPage - 1);
+        }
+        
+        renderRecordsTable();
+      }
+    }
+
+    // Clear all data
+    function clearAllData() {
+      if (confirm('Adakah anda pasti ingin mengosongkan semua data? Tindakan ini tidak boleh dibatalkan.')) {
+        localStorage.removeItem('customerData');
+        allRecords = [];
+        filteredRecords = [];
+        currentPage = 1;
+        
+        renderRecordsTable();
+      }
+    }
+
+    // Download Excel
+    function downloadExcel() {
+      if (allRecords.length === 0) {
+        alert('Tiada data untuk dimuat turun.');
+        return;
+      }
+
+      // Format data for Excel with proper column names
+      const formattedData = allRecords.map(entry => {
+        const formattedEntry = {};
+        for (const key in entry) {
+          const displayKey = key.replace(/([A-Z])/g, ' $1').toUpperCase();
+          formattedEntry[displayKey] = entry[key];
+        }
+        return formattedEntry;
+      });
+
+      const worksheet = XLSX.utils.json_to_sheet(formattedData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Data Pelanggan');
+
+      const dateStr = new Date().toISOString().split('T')[0];
+      XLSX.writeFile(workbook, `data_pelanggan_${dateStr}.xlsx`);
+    }
+  </script>
+</body>
+</html>
